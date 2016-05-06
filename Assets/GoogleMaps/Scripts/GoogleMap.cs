@@ -45,7 +45,7 @@ public class GoogleMap : MonoBehaviour
 
     IEnumerator _Refresh()
     {
-        var url = "http://maps.googleapis.com/maps/api/staticmap";
+		var url = "https://www.google.com//images/branding/googlelogo/2x/googlelogo_color_272x92dp.png";
         var qs = "";
         if (!autoLocateCenter)
         {
