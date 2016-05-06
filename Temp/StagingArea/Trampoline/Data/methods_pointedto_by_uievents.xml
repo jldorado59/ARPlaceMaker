@@ -1,0 +1,23 @@
+<linker>
+	<assembly fullname="Assembly-CSharp">
+		<type fullname="Home">
+			<method name="Crear"/>
+			<method name="Visualizar"/>
+		</type>
+		<type fullname="ScenePersistence">
+			<method name="Guardar"/>
+		</type>
+		<type fullname="ObjectManager">
+			<method name="BorrarObjecto"/>
+		</type>
+		<type fullname="Kudan.AR.Samples.SampleApp">
+			<method name="StartClicked"/>
+			<method name="CargarEscenea"/>
+			<method name="ponerBanca"/>
+			<method name="ponerCaneca"/>
+		</type>
+		<type fullname="Kudan.AR.MarkerlessTransformDriver">
+			<method name="OnTrackingUpdate"/>
+		</type>
+	</assembly>
+</linker>
