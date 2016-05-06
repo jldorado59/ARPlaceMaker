@@ -20,6 +20,11 @@ namespace Kudan.AR.Samples
             GameObject.Find("Mapa").GetComponent<Image>().enabled = false;
         }
 
+        public void Update()
+        {
+    
+        }
+
 		public void ponerCaneca ()
 		{
 			Almacenar (caneca);
