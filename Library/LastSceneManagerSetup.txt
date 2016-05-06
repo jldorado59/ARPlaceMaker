@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/escenasUnity/PlaceMaker.unity
+- path: Assets/escenasUnity/Home.unity
   isLoaded: 1
   isActive: 1

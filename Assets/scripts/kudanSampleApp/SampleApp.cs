@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 namespace Kudan.AR.Samples
@@ -64,6 +65,11 @@ namespace Kudan.AR.Samples
         public void MostrarMapa()
         {
             GameObject.Find("Mapa").GetComponent<Image>().enabled = !GameObject.Find("Mapa").GetComponent<Image>().enabled;
+        }
+
+        public void Back()
+        {
+            SceneManager.LoadScene("Home", LoadSceneMode.Single);
         }
 
 		public void StartClicked ()
