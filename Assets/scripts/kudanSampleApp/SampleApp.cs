@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 namespace Kudan.AR.Samples
@@ -12,6 +13,11 @@ namespace Kudan.AR.Samples
 		public GameObject caneca;
 		public GameObject banca;
 		public GameObject elMarcador;
+
+        public void Start()
+        {
+            GameObject.Find("Mapa").GetComponent<Image>().enabled = false;
+        }
 
 		public void ponerCaneca ()
 		{
@@ -54,6 +60,11 @@ namespace Kudan.AR.Samples
 				miObject.transform.localRotation = obj.Rotation;
 			}
 		}
+
+        public void MostrarMapa()
+        {
+            GameObject.Find("Mapa").GetComponent<Image>().enabled = !GameObject.Find("Mapa").GetComponent<Image>().enabled;
+        }
 
 		public void StartClicked ()
 		{
