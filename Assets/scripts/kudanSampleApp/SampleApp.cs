@@ -60,7 +60,6 @@ namespace Kudan.AR.Samples
             Almacenar(Arbol);
         }
 
-
         public GameObject Almacenar(GameObject prefab)
         {
             GameObject obj = GameObject.Instantiate(prefab, elMarcador.transform.position, elMarcador.transform.rotation) as GameObject;
