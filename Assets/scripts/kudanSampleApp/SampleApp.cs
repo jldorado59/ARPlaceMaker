@@ -5,15 +5,20 @@ using System.Collections;
 
 namespace Kudan.AR.Samples
 {
-	public class SampleApp : MonoBehaviour
-	{
-		public KudanTracker _kudanTracker;
-		public TrackingMethodMarkerless _markerlessTracking;
-		public ObjectManager AdminObjetos;
-		public ScenePersistence Persistencia;
-		public GameObject caneca;
-		public GameObject banca;
-		public GameObject elMarcador;
+    public class SampleApp : MonoBehaviour
+    {
+        public KudanTracker _kudanTracker;
+        public TrackingMethodMarkerless _markerlessTracking;
+        public ObjectManager AdminObjetos;
+        public ScenePersistence Persistencia;
+        public GameObject elMarcador;
+        public GameObject Caneca;
+        public GameObject Banca;
+        public GameObject Policia;
+        public GameObject Lampara;
+        public GameObject Juego;
+        public GameObject Arbol;
+
 
         public void Start()
         {
@@ -25,47 +30,82 @@ namespace Kudan.AR.Samples
     
         }
 
-		public void ponerCaneca ()
-		{
-			Almacenar (caneca);
-		}
+        public void ponerCaneca()
+        {
+            Almacenar(Caneca);
+        }
 
-		public void ponerBanca ()
-		{
-			Almacenar (banca);
-		}
+        public void ponerBanca()
+        {
+            Almacenar(Banca);
+        }
 
-		public GameObject Almacenar (GameObject prefab)
-		{
-			GameObject obj = GameObject.Instantiate (prefab, elMarcador.transform.position, elMarcador.transform.rotation) as GameObject;
-			obj.transform.parent = elMarcador.transform;
+        public void ponerPolicia()
+        {
+            Almacenar(Policia);
+        }
 
-			AdminObjetos.AdicionarObjeto (obj);
+        public void ponerLampara()
+        {
+            Almacenar(Lampara);
+        }
 
-			return obj;
-		}
+        public void ponerJuego()
+        {
+            Almacenar(Juego);
+        }
 
-		public void CargarEscenea ()
-		{
-			Escena escena = Persistencia.LeerEscenea ();
+        public void ponerArbol()
+        {
+            Almacenar(Arbol);
+        }
 
-			foreach (Objeto obj in escena.Objetos) {
 
-				GameObject miObject = null;
+        public GameObject Almacenar(GameObject prefab)
+        {
+            GameObject obj = GameObject.Instantiate(prefab, elMarcador.transform.position, elMarcador.transform.rotation) as GameObject;
+            obj.transform.parent = elMarcador.transform;
 
-				switch (obj.Name.Replace("(Clone)", string.Empty)) {
-				case "miCaneca":
-					miObject = Almacenar (caneca);
-					break;
-				case "miBanca":
-					miObject = Almacenar (banca);
-					break;
-				}
+            AdminObjetos.AdicionarObjeto(obj);
 
-				miObject.transform.localPosition = obj.Position;
-				miObject.transform.localRotation = obj.Rotation;
-			}
-		}
+            return obj;
+        }
+
+        public void CargarEscenea()
+        {
+            Escena escena = Persistencia.LeerEscenea();
+
+            foreach (Objeto obj in escena.Objetos)
+            {
+
+                GameObject miObject = null;
+
+                switch (obj.Name.Replace("(Clone)", string.Empty))
+                {
+                    case "Caneca":
+                        miObject = Almacenar(Caneca);
+                        break;
+                    case "Banca":
+                        miObject = Almacenar(Banca);
+                        break;
+                    case "Policia":
+                        miObject = Almacenar(Policia);
+                        break;
+                    case "Arbol":
+                        miObject = Almacenar(Arbol);
+                        break;
+                    case "Lampara":
+                        miObject = Almacenar(Lampara);
+                        break;
+                    case "Juego":
+                        miObject = Almacenar(Juego);
+                        break;
+                }
+
+                miObject.transform.localPosition = obj.Position;
+                miObject.transform.localRotation = obj.Rotation;
+            }
+        }
 
         public void MostrarMapa()
         {
@@ -77,13 +117,13 @@ namespace Kudan.AR.Samples
             SceneManager.LoadScene("Home", LoadSceneMode.Single);
         }
 
-		public void StartClicked ()
-		{
-			Vector3 floorPosition;
-			Quaternion floorOrientation;
+        public void StartClicked()
+        {
+            Vector3 floorPosition;
+            Quaternion floorOrientation;
 
-			_kudanTracker.FloorPlaceGetPose (out floorPosition, out floorOrientation);
-			_kudanTracker.ArbiTrackStart (floorPosition, floorOrientation);
-		}
-	}
+            _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);
+            _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
+        }
+    }
 }
