@@ -7,8 +7,6 @@ using Kudan.AR;
 public class ObjectManager : MonoBehaviour
 {
 	public List<GameObject> misObjectos;
-    public Transform elMarcador; 
-    public Transform elTracker;
 	public GameObject BotonBorrar;
 
 	protected GameObject miSeleccionado;

@@ -8,10 +8,13 @@ using System.Xml;
 public class ScenePersistence : MonoBehaviour {
 
 	public ObjectManager Manager;
+    public SensorsController Sensors;
+    public bool ResetData;
 
 	// Use this for initialization
 	void Start () {
-	
+        if (ResetData)
+            PlayerPrefs.DeleteAll();
 	}
 	
 	// Update is called once per frame
@@ -19,9 +22,12 @@ public class ScenePersistence : MonoBehaviour {
 	
 	}
 
-	public void Guardar()
+    public Escena Guardar()
 	{
-		Escena escena = new Escena ();
+        int indice = GetIndice();
+        string name = string.Format("Escena{0}", indice + 1);
+
+        Escena escena = new Escena () { Nombre = name, Fecha = DateTime.Now, Latitude = (float) Sensors.Latitude, Longitude = (float) Sensors.Longitude };
 		escena.Objetos = new Objeto[Manager.misObjectos.Count];
 
 		for(int i=0; i < Manager.misObjectos.Count; i++)
@@ -34,22 +40,41 @@ public class ScenePersistence : MonoBehaviour {
 		XmlSerializer serializer = new XmlSerializer (typeof(Escena));
 		serializer.Serialize (str, escena);
 
-		Debug.Log (str.ToString());
-		PlayerPrefs.SetString ("Escena", str.ToString ());
+        PlayerPrefs.SetString (name, str.ToString ());
 		PlayerPrefs.Save ();
 
-		Application.CaptureScreenshot("Screenshot.png");
-		Debug.Log ("Saved screenshot to " + Application.persistentDataPath);
+        Application.CaptureScreenshot(Application.persistentDataPath + "/" + name + ".png");
+
+        SetIndice(indice + 1);
+
+        return escena;
 	}
 
-	public Escena LeerEscenea()
+    public Escena LeerEscenea(int indice)
 	{
-		StringReader str = new StringReader (PlayerPrefs.GetString("Escena"));
+        string name = string.Format("Escena{0}", indice);
+        StringReader str = new StringReader (PlayerPrefs.GetString(name));
 		XmlSerializer serializer = new XmlSerializer (typeof(Escena));
 		Escena escena = serializer.Deserialize (str) as Escena;
 
 		return escena;
-	}		
+	}	
+
+    public int GetIndice()
+    {
+        int indice = 0;
+
+        if (PlayerPrefs.HasKey("Indice"))
+            indice = PlayerPrefs.GetInt("Indice");
+
+        return indice;
+    }
+
+    public void SetIndice(int indice)
+    {
+        PlayerPrefs.SetInt("Indice", indice);
+        PlayerPrefs.Save();
+    }
 }
 
 
@@ -58,6 +83,18 @@ public class Escena
 {
 	[SerializeField]
 	public Objeto[] Objetos;
+
+    [SerializeField]
+    public string Nombre;
+
+    [SerializeField]
+    public DateTime Fecha;
+
+    [SerializeField]
+    public float Latitude;
+
+    [SerializeField]
+    public float Longitude;
 }
 
 [Serializable]

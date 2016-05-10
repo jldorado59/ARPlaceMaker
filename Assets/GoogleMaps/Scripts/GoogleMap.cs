@@ -88,14 +88,12 @@ public class GoogleMap : MonoBehaviour
                 else
                     qs += ":" + WWW.UnEscapeURL(string.Format("{0},{1}", loc.latitude, loc.longitude));
             }
-        }
-
-		
+        }		
 		
         WWW req = new WWW(url + "?" + qs);
         Debug.Log(url + "?" + qs);
         yield return req;
-		Debug.Log (req.progress.ToString());
+
         req.LoadImageIntoTexture(m_Texture);
         this.GetComponent<Image>().sprite = Sprite.Create(m_Texture, new Rect(0, 0, m_Texture.width, m_Texture.height), Vector2.one * 0.5f);
 
