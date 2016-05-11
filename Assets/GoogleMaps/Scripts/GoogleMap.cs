@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.IO;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -27,7 +28,7 @@ public class GoogleMap : MonoBehaviour
 
     void Start()
     {
-        m_Texture = new Texture2D(size, size, TextureFormat.ETC2_RGBA8, false);
+        m_Texture = new Texture2D(size, size);
             
         if (loadOnStart)
             Refresh();	
@@ -97,10 +98,14 @@ public class GoogleMap : MonoBehaviour
             Debug.Log("Cargando mapa");
         }
 
+        Debug.Log("Mapa cargado");
         req.LoadImageIntoTexture(m_Texture);
-        this.GetComponent<Image>().sprite = Sprite.Create(m_Texture, new Rect(0, 0, m_Texture.width, m_Texture.height), Vector2.one * 0.5f);
 
+        File.WriteAllBytes(Application.persistentDataPath + "/mapa.png", m_Texture.EncodeToPNG());
+
+        this.GetComponent<Image>().sprite = Sprite.Create(m_Texture, new Rect(0, 0, m_Texture.width, m_Texture.height), Vector2.one * 0.5f);
     }
+    
 
     public void UpdateMarker(int index, string label, GoogleMapColor color, float latitude, float longitude)
     {
