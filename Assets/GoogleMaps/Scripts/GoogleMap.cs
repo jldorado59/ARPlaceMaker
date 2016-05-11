@@ -92,7 +92,7 @@ public class GoogleMap : MonoBehaviour
             }
         }		
 		
-        WWW req = new WWW(url + "?" + qs);
+        WWW req = new WWW(System.Uri.EscapeUriString(url + "?" + qs));
         while (!req.isDone)
         {
             Debug.Log("Cargando mapa");
@@ -100,8 +100,6 @@ public class GoogleMap : MonoBehaviour
 
         Debug.Log("Mapa cargado");
         req.LoadImageIntoTexture(m_Texture);
-
-        File.WriteAllBytes(Application.persistentDataPath + "/mapa.png", m_Texture.EncodeToPNG());
 
         this.GetComponent<Image>().sprite = Sprite.Create(m_Texture, new Rect(0, 0, m_Texture.width, m_Texture.height), Vector2.one * 0.5f);
     }
