@@ -27,7 +27,7 @@ public class GoogleMap : MonoBehaviour
 
     void Start()
     {
-        m_Texture = new Texture2D(size, size);
+        m_Texture = new Texture2D(size, size, TextureFormat.ETC2_RGBA8, false);
             
         if (loadOnStart)
             Refresh();	
@@ -39,10 +39,11 @@ public class GoogleMap : MonoBehaviour
         {
             Debug.LogError("Auto Center will only work if paths or markers are used.");	
         }
-        StartCoroutine(_Refresh());
+        _Refresh();
+        //StartCoroutine(_Refresh());
     }
 
-    IEnumerator _Refresh()
+    void _Refresh()
     {
         var url = "http://maps.googleapis.com/maps/api/staticmap";
         var qs = "";
@@ -91,8 +92,10 @@ public class GoogleMap : MonoBehaviour
         }		
 		
         WWW req = new WWW(url + "?" + qs);
-        Debug.Log(url + "?" + qs);
-        yield return req;
+        while (!req.isDone)
+        {
+            Debug.Log("Cargando mapa");
+        }
 
         req.LoadImageIntoTexture(m_Texture);
         this.GetComponent<Image>().sprite = Sprite.Create(m_Texture, new Rect(0, 0, m_Texture.width, m_Texture.height), Vector2.one * 0.5f);

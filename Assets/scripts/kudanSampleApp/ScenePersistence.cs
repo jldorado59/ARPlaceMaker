@@ -43,7 +43,7 @@ public class ScenePersistence : MonoBehaviour {
         PlayerPrefs.SetString (name, str.ToString ());
 		PlayerPrefs.Save ();
 
-        Application.CaptureScreenshot(Application.persistentDataPath + "/" + name + ".png");
+        Application.CaptureScreenshot(name + ".png");
 
         SetIndice(indice + 1);
 

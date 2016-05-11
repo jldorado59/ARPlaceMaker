@@ -34,15 +34,21 @@ public class ObjectManager : MonoBehaviour
 					if (hit.transform.gameObject == misObjectos[i]) {						
 
 						if (miSeleccionado != null && miSeleccionado != hit.transform.gameObject) {
-                            foreach(MeshRenderer renderer in miSeleccionado.GetComponentsInChildren<MeshRenderer>())
-                                renderer.material.color = Color.white;
+                            foreach (MeshRenderer renderer in miSeleccionado.GetComponentsInChildren<MeshRenderer>())
+                            {
+                                foreach(Material material in renderer.materials)
+                                    material.color = Color.white;
+                            }
 						}
 
 						miSeleccionado = misObjectos [i];
 
-                        foreach(MeshRenderer renderer in miSeleccionado.GetComponentsInChildren<MeshRenderer>())
-                            renderer.material.color = Color.red;
-                        
+                        foreach (MeshRenderer renderer in miSeleccionado.GetComponentsInChildren<MeshRenderer>())
+                        {                            
+                            foreach(Material material in renderer.materials)
+                                material.color = Color.green;
+                        }
+
 						BotonBorrar.SetActive (true);
 
 						break;

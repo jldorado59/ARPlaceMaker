@@ -49,7 +49,7 @@ public class VerEscenasController : MonoBehaviour
         Nombre.text = escena.Nombre + " " + escena.Fecha.ToShortDateString();
         Posicion.text = escena.Latitude.ToString() + "," + escena.Longitude.ToString();
 
-        WWW www = new WWW("file://c:" + Application.persistentDataPath + "/" + escena.Nombre + ".png"); //rendering texture
+        WWW www = new WWW("file://" + Application.persistentDataPath + "/" + escena.Nombre + ".png"); //rendering texture
 
         while (!www.isDone)
         {
@@ -59,19 +59,8 @@ public class VerEscenasController : MonoBehaviour
         www.LoadImageIntoTexture(m_Texture);
         Imagen.sprite = Sprite.Create(m_Texture, new Rect(0, 0, Screen.width, Screen.height), new Vector2(0.5f, 0.5f));
 
-        //byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/" + escena.Nombre + ".png");
-        //Texture2D texture = new Texture2D(Screen.width, Screen.height);
-        //bytes = texture.EncodeToPNG();
-
-        //texture.LoadImage(bytes);
-
-        //this.StartCoroutine(LoadImageCoroutine(escena));
-
-        //Imagen.sprite = Sprite.Create(texture, new Rect(0, 0, Screen.width, Screen.height), new Vector2(0.5f, 0.5f));
-
-
-        //Mapa.GetComponent<MapController>().SetPosition(1, escena.Nombre, escena.Latitude, escena.Longitude);
-        //Mapa.GetComponent<MapController>().Refresh();
+        Mapa.GetComponent<MapController>().SetPosition(1, escena.Nombre, escena.Latitude, escena.Longitude);
+        Mapa.GetComponent<MapController>().Refresh();
     }
 
     /*IEnumerator LoadImageCoroutine(Escena escena)
