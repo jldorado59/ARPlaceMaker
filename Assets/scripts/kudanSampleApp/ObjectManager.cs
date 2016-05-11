@@ -34,12 +34,15 @@ public class ObjectManager : MonoBehaviour
 					if (hit.transform.gameObject == misObjectos[i]) {						
 
 						if (miSeleccionado != null && miSeleccionado != hit.transform.gameObject) {
-							miSeleccionado.GetComponent<MeshRenderer> ().material.color = Color.white;
+                            foreach(MeshRenderer renderer in miSeleccionado.GetComponentsInChildren<MeshRenderer>())
+                                renderer.material.color = Color.white;
 						}
 
 						miSeleccionado = misObjectos [i];
-						miSeleccionado.GetComponent<MeshRenderer> ().material.color = Color.green;
 
+                        foreach(MeshRenderer renderer in miSeleccionado.GetComponentsInChildren<MeshRenderer>())
+                            renderer.material.color = Color.red;
+                        
 						BotonBorrar.SetActive (true);
 
 						break;
@@ -56,7 +59,7 @@ public class ObjectManager : MonoBehaviour
             //Vector3 right = Quaternion.AngleAxis(90, Vector3.up) * dir;
 
 			if (gesture.Position.x > Screen.width / 3)
-                miSeleccionado.transform.localPosition +=  miSeleccionado.transform.right * gesture.DeltaMove.x + miSeleccionado.transform.forward * gesture.DeltaMove.y;
+                miSeleccionado.transform.localPosition +=  Vector3.right * gesture.DeltaMove.x + Vector3.forward * gesture.DeltaMove.y;
 			else
 				miSeleccionado.transform.localRotation *= Quaternion.AngleAxis (gesture.DeltaMove.x * 30.0f * Time.deltaTime, Vector3.up);
 		}
