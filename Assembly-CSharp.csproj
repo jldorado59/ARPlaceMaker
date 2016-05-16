@@ -105,6 +105,7 @@
      <Compile Include="Assets\scripts\kudanSampleApp\GeoPointsController.cs" />
      <Compile Include="Assets\scripts\kudanSampleApp\Home.cs" />
      <Compile Include="Assets\scripts\kudanSampleApp\MapController.cs" />
+     <Compile Include="Assets\scripts\kudanSampleApp\NotificatioControllet.cs" />
      <Compile Include="Assets\scripts\kudanSampleApp\ObjectManager.cs" />
      <Compile Include="Assets\scripts\kudanSampleApp\SampleApp.cs" />
      <Compile Include="Assets\scripts\kudanSampleApp\SampleScripting.cs" />
@@ -146,6 +147,8 @@
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
       <Project>{B0329498-B0CC-A67D-2FE3-392FC0A07DF5}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
+      <Project>{C05AEF80-28DE-803D-6BAB-0FA3484B64F6}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
