@@ -7,6 +7,8 @@ public class VerEscenasController : MonoBehaviour
 {
 
     public ScenePersistence Persistencia;
+    public TwitterController Twitter;
+    public DialogController Dialogo;
     public Image Imagen;
     public Image Mapa;
     public Text Nombre;
@@ -23,6 +25,7 @@ public class VerEscenasController : MonoBehaviour
     {
         Imagen.enabled = true;
         Mapa.enabled = false;
+        Dialogo.OnYes = OnTwitterYes;
 
         m_Texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
     }
@@ -49,7 +52,11 @@ public class VerEscenasController : MonoBehaviour
         Nombre.text = escena.Nombre + " " + escena.Fecha.ToShortDateString();
         Posicion.text = escena.Latitude.ToString() + "," + escena.Longitude.ToString();
 
+        #if(UNITY_EDITOR_WIN)
+        WWW www = new WWW("file://c:" + Application.persistentDataPath + "/" + escena.Nombre + ".png"); //rendering texture
+        #else
         WWW www = new WWW("file://" + Application.persistentDataPath + "/" + escena.Nombre + ".png"); //rendering texture
+        #endif
 
         while (!www.isDone)
         {
@@ -113,6 +120,24 @@ public class VerEscenasController : MonoBehaviour
     public void Cargar()
     {
         OnCargarEscena(m_Indice);
+    }
+
+    public void Twittear()
+    {
+        Twitter.TwittearScreenShot(Nombre.text, m_Texture.EncodeToPNG());    
+        this.StartCoroutine(TweetCoroutine());
+    }
+
+    public IEnumerator TweetCoroutine()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        Dialogo.Mostrar("Imagen publicada", "Tu imagen ha sido publicada en twitter, deseas ver el tweet?");
+    }
+
+    public void OnTwitterYes()
+    {
+        Application.OpenURL("https://twitter.com/MiEspacioPub");
     }
 }
 

@@ -85,6 +85,9 @@
  <Reference Include="UnityEditor.Android.Extensions">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
  </Reference>
+ <Reference Include="Snip-n-Tweet">
+ <HintPath>E:/Projects/Universidad/ARPlaceMaker/ARPlaceMaker/Assets/Plugins/Snip-n-Tweet/Snip-n-Tweet.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">

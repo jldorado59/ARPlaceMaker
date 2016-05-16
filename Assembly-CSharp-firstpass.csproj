@@ -49,6 +49,7 @@
      <Compile Include="Assets\Plugins\Pixelplacement\iTween\Sample\RotateSample.cs" />
      <Compile Include="Assets\Plugins\Pixelplacement\iTween\Sample\SampleInfo.cs" />
      <Compile Include="Assets\Plugins\Pixelplacement\iTween\iTween.cs" />
+     <Compile Include="Assets\Plugins\Snip-n-Tweet\SnipNTweetBehaviour.cs" />
      <None Include="Assets\FingerGestures\Readme.txt" />
      <None Include="Assets\Meshes\laxer tree pkg\README.txt" />
      <None Include="Assets\KudanAR\Materials\Background.shader" />
@@ -63,6 +64,9 @@
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="Snip-n-Tweet">
+ <HintPath>E:/Projects/Universidad/ARPlaceMaker/ARPlaceMaker/Assets/Plugins/Snip-n-Tweet/Snip-n-Tweet.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

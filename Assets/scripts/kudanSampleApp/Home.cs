@@ -16,11 +16,13 @@ public class Home : MonoBehaviour {
 
 	public void Crear()
 	{
+        Parameters.Modo = "Crear";
 		SceneManager.LoadScene ("PlaceMaker", LoadSceneMode.Single);
 	}
 
 	public void Visualizar()
 	{
+        Parameters.Modo = "Visualizar";
         SceneManager.LoadScene ("PlaceMaker", LoadSceneMode.Single);
 	}
 }

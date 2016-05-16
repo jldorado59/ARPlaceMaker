@@ -2,6 +2,11 @@
 using UnityEngine.UI;
 using System;
 
+public static class Parameters
+{
+    public static string Modo = "Crear";
+}
+
 [Serializable]
 public class GeoPoint
 {

@@ -27,6 +27,20 @@ namespace Kudan.AR.Samples
             VerEscena.gameObject.SetActive(false);
             VerEscena.OnCargarEscena += CargarEscena;
 
+            if (Parameters.Modo == "Crear")
+            {
+                GameObject.Find("PanelObjetos").transform.localScale = Vector3.one;
+                GameObject.Find("BtnSubir").transform.localScale = Vector3.one;
+                GameObject.Find("BtnCargar").transform.localScale = Vector3.zero;
+                GameObject.Find("BtnVotar").transform.localScale = Vector3.zero;
+            }
+            else
+            {
+                GameObject.Find("PanelObjetos").transform.localScale = Vector3.zero;
+                GameObject.Find("BtnSubir").transform.localScale = Vector3.zero;
+                GameObject.Find("BtnCargar").transform.localScale = Vector3.one;
+                GameObject.Find("BtnVotar").transform.localScale = Vector3.one;
+            }
 
             #if(UNITY_EDITOR_WIN)
                 Camera.main.enabled = false;
@@ -34,8 +48,7 @@ namespace Kudan.AR.Samples
             #else
                 Camera.main.enabled = true;
                 GameObject.Find("Camera").SetActive(false);                
-            #endif
-          
+            #endif          
         }
 
         public void Update()
@@ -171,6 +184,11 @@ namespace Kudan.AR.Samples
         public void Back()
         {
             SceneManager.LoadScene("Home", LoadSceneMode.Single);
+        }
+
+        public void Votar()
+        {
+            Application.OpenURL("https://twitter.com/MiEspacioPub");
         }
 
         public void StartClicked()
