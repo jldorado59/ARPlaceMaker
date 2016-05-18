@@ -75,11 +75,9 @@ public class ObjectManager : MonoBehaviour
 	void OnDrag (DragGesture gesture)
 	{		
 		if (miSeleccionado != null) {
-            Vector3 dir = new Vector3(Tracker.position.x, Marcador.position.y, Tracker.position.z) - Marcador.position;
-            Vector3 right = Quaternion.AngleAxis(90, Vector3.up) * dir;
 
-			if (gesture.Position.x > Screen.width / 4)
-                miSeleccionado.transform.localPosition +=  (-1) * right.normalized * gesture.DeltaMove.x + (-1) * dir.normalized * gesture.DeltaMove.y;
+            if (gesture.Position.x > Screen.width / 4)
+                miSeleccionado.transform.localPosition += Marcador.right * gesture.DeltaMove.x + Marcador.forward * gesture.DeltaMove.y;
 			else
 				miSeleccionado.transform.localRotation *= Quaternion.AngleAxis (gesture.DeltaMove.x * 30.0f * Time.deltaTime, Vector3.up);
 		}
