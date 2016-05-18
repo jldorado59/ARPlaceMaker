@@ -31,6 +31,7 @@ public class CompassController : MonoBehaviour {
 
         var xangle = xrot * (180 / Mathf.PI) + 90;
         var zangle = -zrot * (180 / Mathf.PI);
+		this.transform.eulerAngles = new Vector3 (xangle, 0, zangle - Input.compass.trueHeading);
         //transform.FindChild("MainCamera").FindChild("Compass").eulerAngles = new Vector3 (xangle, 0, zangle - Input.compass.trueHeading);
     }
 }

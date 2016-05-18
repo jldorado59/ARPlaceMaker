@@ -35,9 +35,9 @@ namespace Kudan.AR
 		public void OnTrackingUpdate(Trackable trackable)
 		{
             this.transform.localPosition = trackable.position;
-            this.transform.localRotation = trackable.orientation;
-
-            this.gameObject.SetActive(trackable.isDetected);
+			this.transform.rotation = trackable.orientation;
+			//this.transform.rotation = Quaternion.AngleAxis (Input.compass.trueHeading, this.transform.up) * this.transform.rotation;		
+	        this.gameObject.SetActive(trackable.isDetected);
 		}
 	}
 };

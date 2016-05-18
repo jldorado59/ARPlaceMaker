@@ -13,6 +13,7 @@ namespace Kudan.AR.Samples
         public ScenePersistence Persistencia;
         public VerEscenasController VerEscena;
         public GameObject elMarcador;
+		public GameObject planoMarcador;
         public GameObject Caneca;
         public GameObject Banca;
         public GameObject Policia;
@@ -53,7 +54,13 @@ namespace Kudan.AR.Samples
 
         public void Update()
         {
-    
+			Vector3 floorPosition;
+			Quaternion floorOrientation;
+
+			_kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);
+
+			planoMarcador.transform.position = floorPosition;
+			planoMarcador.transform.rotation = floorOrientation;
         }
 
         public void ponerCaneca()
@@ -197,7 +204,7 @@ namespace Kudan.AR.Samples
             Quaternion floorOrientation;
 
             _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);
-            _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
+			_kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
         }
     }
 }

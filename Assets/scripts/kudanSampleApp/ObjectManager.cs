@@ -9,7 +9,6 @@ public class ObjectManager : MonoBehaviour
 	public List<GameObject> misObjectos;
     public GameObject PanelActions;
 	public GameObject BotonBorrar;
-    public Transform Tracker;
     public Transform Marcador;
 
 	protected GameObject miSeleccionado;
@@ -77,7 +76,7 @@ public class ObjectManager : MonoBehaviour
 		if (miSeleccionado != null) {
 
             if (gesture.Position.x > Screen.width / 4)
-                miSeleccionado.transform.localPosition += Marcador.right * gesture.DeltaMove.x + Marcador.forward * gesture.DeltaMove.y;
+				miSeleccionado.transform.localPosition += Marcador.transform.right * gesture.DeltaMove.x + Marcador.transform.forward * gesture.DeltaMove.y;
 			else
 				miSeleccionado.transform.localRotation *= Quaternion.AngleAxis (gesture.DeltaMove.x * 30.0f * Time.deltaTime, Vector3.up);
 		}
