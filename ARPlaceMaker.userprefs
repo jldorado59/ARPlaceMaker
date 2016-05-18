@@ -1,22 +1,22 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\kudanSampleApp\NotificatioControllet.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\kudanSampleApp\ObjectManager.cs">
     <Files>
-      <File FileName="Assets\Plugins\UnityNotificationBar\Scripts\UnityNotificationBar.js" Line="74" Column="21" />
+      <File FileName="Assets\scripts\kudanSampleApp\ObjectManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Plugins\UnityNotificationBar\Scripts\UnityNotificationBar.js" Line="1" Column="1" />
       <File FileName="Assets\scripts\kudanSampleApp\DialogController.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\kudanSampleApp\TwitterController.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\kudanSampleApp\VerEscenasController.cs" Line="1" Column="1" />
-      <File FileName="Assets\scripts\kudanSampleApp\ObjectManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\scripts\kudanSampleApp\SampleApp.cs" Line="191" Column="66" />
+      <File FileName="Assets\scripts\kudanSampleApp\SampleApp.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\kudanSampleApp\ScenePersistence.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\kudanSampleApp\SampleScripting.cs" Line="1" Column="1" />
       <File FileName="Assets\KudanAR\Scripts\Components\KudanTracker.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\kudanSampleApp\MapController.cs" Line="1" Column="1" />
       <File FileName="Assets\GoogleMaps\Scripts\GoogleMap.cs" Line="1" Column="1" />
       <File FileName="Assets\Plugins\Pixelplacement\iTween\iTween.cs" Line="1" Column="1" />
-      <File FileName="Assets\Plugins\UnityNotificationBar\Scripts\Notification.js" Line="43" Column="3" />
-      <File FileName="Assets\Plugins\UnityNotificationBar\Scripts\ExampleScript.js" Line="41" Column="87" />
-      <File FileName="Assets\scripts\kudanSampleApp\NotificatioControllet.cs" Line="26" Column="90" />
+      <File FileName="Assets\Plugins\UnityNotificationBar\Scripts\Notification.js" Line="1" Column="1" />
+      <File FileName="Assets\Plugins\UnityNotificationBar\Scripts\ExampleScript.js" Line="1" Column="1" />
+      <File FileName="Assets\scripts\kudanSampleApp\NotificatioControllet.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

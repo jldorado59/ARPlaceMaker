@@ -7,7 +7,10 @@ using Kudan.AR;
 public class ObjectManager : MonoBehaviour
 {
 	public List<GameObject> misObjectos;
+    public GameObject PanelActions;
 	public GameObject BotonBorrar;
+    public Transform Tracker;
+    public Transform Marcador;
 
 	protected GameObject miSeleccionado;
     protected Dictionary<Material, Color> misColores;
@@ -17,7 +20,9 @@ public class ObjectManager : MonoBehaviour
 	{
         if(BotonBorrar != null)
 		    BotonBorrar.SetActive (false);
-        
+
+        PanelActions.SetActive(false);
+
 		misObjectos = new List<GameObject>();
         misColores = new Dictionary<Material, Color>();
 	}
@@ -59,7 +64,7 @@ public class ObjectManager : MonoBehaviour
                         }
 
 						BotonBorrar.SetActive (true);
-
+                        PanelActions.SetActive(true);
 						break;
 					}			
 				}	
@@ -70,11 +75,11 @@ public class ObjectManager : MonoBehaviour
 	void OnDrag (DragGesture gesture)
 	{		
 		if (miSeleccionado != null) {
-            //Vector3 dir = elTracker.position - elMarcador.position;
-            //Vector3 right = Quaternion.AngleAxis(90, Vector3.up) * dir;
+            Vector3 dir = new Vector3(Tracker.position.x, Marcador.position.y, Tracker.position.z) - Marcador.position;
+            Vector3 right = Quaternion.AngleAxis(90, Vector3.up) * dir;
 
-			if (gesture.Position.x > Screen.width / 3)
-                miSeleccionado.transform.localPosition +=  Vector3.right * gesture.DeltaMove.x + Vector3.forward * gesture.DeltaMove.y;
+			if (gesture.Position.x > Screen.width / 4)
+                miSeleccionado.transform.localPosition +=  (-1) * right.normalized * gesture.DeltaMove.x + (-1) * dir.normalized * gesture.DeltaMove.y;
 			else
 				miSeleccionado.transform.localRotation *= Quaternion.AngleAxis (gesture.DeltaMove.x * 30.0f * Time.deltaTime, Vector3.up);
 		}
