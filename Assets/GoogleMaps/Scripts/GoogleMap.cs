@@ -92,10 +92,11 @@ public class GoogleMap : MonoBehaviour
             }
         }		
 		
+        Debug.Log(System.Uri.EscapeUriString(url + "?" + qs));
         WWW req = new WWW(System.Uri.EscapeUriString(url + "?" + qs));
         while (!req.isDone)
         {
-            Debug.Log("Cargando mapa");
+                
         }
 
         Debug.Log("Mapa cargado");

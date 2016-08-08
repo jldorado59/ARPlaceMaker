@@ -4,10 +4,19 @@ using System.Collections;
 
 namespace Kudan.AR
 {
+	/// <summary>
+	/// The base transform driver that other transform drivers inherit from.
+	/// </summary>
 	public abstract class TransformDriverBase : MonoBehaviour
 	{
+		/// <summary>
+		/// Reference to the base tracker class.
+		/// </summary>
 		protected TrackingMethodBase _trackerBase;
 
+		/// <summary>
+		/// Start this instance.
+		/// </summary>
 		public virtual void Start()
 		{
 			FindTracker();
@@ -17,11 +26,17 @@ namespace Kudan.AR
 			}
 		}
 
+		/// <summary>
+		/// Raises the destroy event.
+		/// </summary>
 		public virtual void OnDestroy()
 		{
 			Unregister();
 		}
 
+		/// <summary>
+		/// Update this instance.
+		/// </summary>
 		public virtual void Update()
 		{
 			if (_trackerBase == null)
@@ -34,16 +49,23 @@ namespace Kudan.AR
 			}
 		}
 
+		/// <summary>
+		/// Register this instance with the Tracking Method class for event handling.
+		/// </summary>
 		protected virtual void Register()
 		{
-			// Register with the Tracking Method class to handle any events etc
 		}
 
+		/// <summary>
+		/// Unregister this instance with the Tracking Method class for event handling.
+		/// </summary>
 		protected virtual void Unregister()
 		{
-			// Unregister with the Tracking Method class from any events etc
 		}
 
+		/// <summary>
+		/// Finds the tracker.
+		/// </summary>
 		protected abstract void FindTracker();
 	}
 };

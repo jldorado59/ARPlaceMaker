@@ -1,10 +1,13 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 using System.Collections;
 
 namespace Kudan.AR
 {
 	[CustomEditor(typeof(MarkerTransformDriver))]
+	/// <summary>
+	/// Class that creates a custom inspector entry for the MarkerTransformDriver script.
+	/// </summary>
 	public class MarkerTransformDriverEditor : Editor
 	{
 		public Texture2D _kudanLogo;
@@ -17,8 +20,10 @@ namespace Kudan.AR
 
 		public override void OnInspectorGUI()
 		{
-			if (_driver == null)
+			if (_driver == null) 
+			{
 				return;
+			}
 
 			GUILayout.BeginVertical();
 

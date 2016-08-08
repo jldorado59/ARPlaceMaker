@@ -36,15 +36,25 @@
 			float4 _MainTex_ST;
 			float4 _MainTex_TexelSize;
 
+			float2 ScreenParams;
+
 			float2 ScaleZoomToFit(float targetWidth, float targetHeight, float sourceWidth, float sourceHeight)
 			{
-				float targetAspect = targetHeight / targetWidth;
-				float sourceAspect = sourceHeight / sourceWidth;
-				float2 scale = float2(1.0, sourceAspect / targetAspect);
-				if (targetAspect > sourceAspect)
+				float sourceAspect = sourceWidth / sourceHeight;
+				float targetAspect = targetWidth / targetHeight;
+
+				float2 scale;
+
+				if (targetAspect > 1.0)
 				{
-					scale = float2(targetAspect / sourceAspect, 1.0);
+					scale = float2(1.0, targetAspect / sourceAspect);
 				}
+
+				else
+				{
+					scale = float2(1.0 / (sourceAspect * targetAspect), 1.0);
+				}
+
 				return scale;
 			}
 			
@@ -54,7 +64,7 @@
 
 				float2 scale = ScaleZoomToFit(_ScreenParams.x, _ScreenParams.y, _MainTex_TexelSize.z, _MainTex_TexelSize.w);
 				
-				float2 pos = ((v.uv-0.5) * scale * 2.0);		
+				float2 pos = (v.vertex * scale * 2.0);		
 				o.vertex = float4(pos, 0, 1);
 
 				//o.uv = TRANSFORM_TEX(v.uv, _MainTex);
@@ -67,7 +77,7 @@
 			{
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
-				//return float4(i.uv.xy, 0, 1) * col;
+//				return float4(i.uv.xy, 0, 1) * col;
 				return col;
 			}
 			ENDCG

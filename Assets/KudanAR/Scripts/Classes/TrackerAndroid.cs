@@ -1,4 +1,4 @@
-﻿#if UNITY_ANDROID
+#if UNITY_ANDROID
 
 using UnityEngine;
 using System.Text;
@@ -25,6 +25,15 @@ namespace Kudan.AR
 		private int					_numFramesRendered		= 0;
 		private float				_rateTimer				= 0.0f;
 
+		private MeshFilter 			_cameraBackgroundMeshFilter;
+
+		private ScreenOrientation 	_prevScreenOrientation;
+		private Matrix4x4 			_projectionRotation = Matrix4x4.identity;
+
+		public TrackerAndroid(Renderer background)
+		{
+			_cameraBackgroundMeshFilter = background.GetComponent<MeshFilter> ();
+		}
 
 		public override bool InitPlugin()
 		{
@@ -116,11 +125,13 @@ namespace Kudan.AR
 		{
 //			Debug.LogError( "[KudanAR] OnApplicationPause called - pauseStatus: " + pauseStatus );
 
-			if( pauseStatus )
-			{
+			if (pauseStatus) {
 				// First stop existing input
 				m_WasTrackingWhenApplicationPaused = _isTrackingRunning;
-				StopInput();
+				StopInput ();
+			} else {
+
+				OnApplicationFocus (true);
 			}
 		}
 		
@@ -308,6 +319,8 @@ namespace Kudan.AR
 
 		public override void UpdateTracking()
 		{
+			UpdateRotation ();
+
 			if( m_KudanAR_Instance != null )
 			{
 				// Update projection matrix
@@ -316,6 +329,7 @@ namespace Kudan.AR
 				
 				float fCameraAspectRatio = (float)( m_Width ) / (float)( m_Height );
 				_projectionMatrix = ConvertNativeFloatsToMatrix( projectionFloats, fCameraAspectRatio );
+				_projectionMatrix = _projectionMatrix * _projectionRotation;
 			}
 
 			if( _isTrackingRunning )
@@ -345,6 +359,46 @@ namespace Kudan.AR
 
 			// Update our frame rates
 			UpdateFrameRates();
+		}
+
+		public void UpdateRotation()
+		{
+			ScreenOrientation currentOrientation = Screen.orientation;
+
+			if (currentOrientation == _prevScreenOrientation) {
+				return;
+			}
+				
+			_prevScreenOrientation = currentOrientation;
+
+			int[] indices;
+			float fCameraAspectRatio = (float)( m_Width ) / (float)( m_Height );
+			float projectionScale = 1.0f / fCameraAspectRatio;
+
+			if (currentOrientation == ScreenOrientation.LandscapeLeft) {
+				indices = new int[]{ 0, 1, 2, 3 };
+				_projectionRotation = Matrix4x4.identity;
+			} else if (currentOrientation == ScreenOrientation.Portrait) {
+				indices = new int[]{ 2, 3, 1, 0 };
+				_projectionRotation = Matrix4x4.TRS (Vector3.zero, Quaternion.AngleAxis(90, Vector3.back), new Vector3( projectionScale, projectionScale, 1 ));
+			} else if (currentOrientation == ScreenOrientation.LandscapeRight) {
+				indices = new int[]{ 1, 0, 3, 2 };
+				_projectionRotation = Matrix4x4.TRS (Vector3.zero, Quaternion.AngleAxis(180, Vector3.back), Vector3.one);
+			} else if (currentOrientation == ScreenOrientation.PortraitUpsideDown) {
+				indices = new int[]{ 3, 2, 0, 1 };
+				_projectionRotation = Matrix4x4.TRS (Vector3.zero, Quaternion.AngleAxis(270, Vector3.back), new Vector3( projectionScale, projectionScale, 1 ));			
+			} else {
+				return;
+			}
+
+			Vector3[] pos = new Vector3[4];
+
+			pos [indices[0]] = new Vector3 (-0.5f, -0.5f, 0.0f);
+			pos [indices[1]] = new Vector3 (0.5f, 0.5f, 0.0f);
+			pos [indices[2]] = new Vector3 (0.5f, -0.5f, 0.0f);
+			pos [indices[3]] = new Vector3 (-0.5f, 0.5f, 0.0f);
+
+			_cameraBackgroundMeshFilter.mesh.vertices = pos;
 		}
 
 		public override void PostRender()
@@ -391,7 +445,7 @@ namespace Kudan.AR
 
             if (m_KudanAR_Instance != null)
             {
-				m_KudanAR_Instance.Call ("updateArbi");
+				m_KudanAR_Instance.Call ("updateArbi", _floorHeight);
 
                 AndroidJavaObject floorPosition = m_KudanAR_Instance.Get<AndroidJavaObject>("m_FloorPosition");
                 AndroidJavaObject floorOrientation = m_KudanAR_Instance.Get<AndroidJavaObject>("m_FloorOrientation");
@@ -416,7 +470,7 @@ namespace Kudan.AR
 
             if (m_KudanAR_Instance != null)
             {
-				m_KudanAR_Instance.Call ("updateArbi");
+				m_KudanAR_Instance.Call ("updateArbi", _floorHeight);
 
                 AndroidJavaObject arbiPosition = m_KudanAR_Instance.Get<AndroidJavaObject>("m_ArbiPosition");
                 AndroidJavaObject arbiOrientation = m_KudanAR_Instance.Get<AndroidJavaObject>("m_ArbiOrientation");
@@ -434,8 +488,6 @@ namespace Kudan.AR
 //				orientation = orientation * Quaternion.AngleAxis(-90f, Vector3.forward) * Quaternion.AngleAxis(90f, Vector3.left);
 
 				// return new Quaternion(x, y, z, w) * Quaternion.AngleAxis(-90f, Vector3.forward) * Quaternion.AngleAxis(90f, Vector3.left);
-
-
             }
         }
 
@@ -476,8 +528,7 @@ namespace Kudan.AR
 
 			return result;
 		}
-
-
+			
 		// Utility functions for converting native data into Unity data
 		public Matrix4x4 ConvertNativeFloatsToMatrix(float[] r, float cameraAspect)
 		{
@@ -487,15 +538,17 @@ namespace Kudan.AR
 			m.SetRow(1, new Vector4(r[4], r[5], r[6], r[7]));
 			m.SetRow(2, new Vector4(r[8], r[9], r[10], r[11]));
 			m.SetRow(3, new Vector4(r[12], r[13], r[14], r[15]));
-			m = m.transpose;
 
 			// Scale the aspect ratio based on camera vs screen ratios
 			float screenAspect = ((float)Screen.width / (float)Screen.height);
 			float scale = cameraAspect / screenAspect;
+
 			if (scale > 1)
 				m.m00 *= scale;
 			else
 				m.m11 /= scale;
+
+			m = m.transpose;
 
 			m.m02 *= -1f;
 			m.m12 *= -1f;

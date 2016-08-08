@@ -5,9 +5,11 @@ using System.Collections;
 namespace Kudan.AR
 {
 	[CustomEditor(typeof(KudanTracker))]
+	/// <summary>
+	/// Script that creates a custom inspector entry for the Kudan Tracker. 
+	/// </summary>
 	public class KudanTrackerEditor : Editor
 	{
-		public Texture2D _kudanLogo;
 		//private KudanTracker _target;
 
 		void Awake()
@@ -20,25 +22,27 @@ namespace Kudan.AR
 			GUILayout.BeginVertical();
 
 
-			if (_kudanLogo != null)
-			{
-				Rect r = GUILayoutUtility.GetRect(_kudanLogo.width, _kudanLogo.height + 32f);
-				GUI.DrawTexture(r, _kudanLogo, ScaleMode.ScaleToFit);
-			}
-
 			this.DrawDefaultInspector();
 
 			GUILayout.Space(16f);
 
-			GUILayout.Label("App ID: " + Application.bundleIdentifier);
-			if (GUILayout.Button("Set App ID"))
+			EditorGUILayout.LabelField("App/Bundle ID:", PlayerSettings.bundleIdentifier);
+
+			if (GUILayout.Button("Set App/Bundle ID"))
 			{
 				EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
 			}
 
-			if (GUILayout.Button("Get new API Key"))
+			GUILayout.Space(5f);
+			if (GUILayout.Button("Get Editor API Key"))
 			{
-				Application.OpenURL("https://www.kudan.eu/developers/");
+				Application.OpenURL("https://www.kudan.eu/api/");
+			}
+			GUILayout.Space(5f);
+
+			if (GUILayout.Button("Get Support"))
+			{
+				Application.OpenURL("https://www.kudan.eu/support/");
 			}
 
 			

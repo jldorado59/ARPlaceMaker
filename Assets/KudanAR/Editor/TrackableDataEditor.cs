@@ -1,10 +1,14 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Kudan.AR
 {
 	[CustomEditor(typeof(TrackableData))]
+	/// <summary>
+	/// Class that creates a custom inspector entry for TrackableData assets.
+	/// </summary>
 	public class TrackableDataEditor : Editor
 	{
 		private TrackableData db;
@@ -18,7 +22,7 @@ namespace Kudan.AR
 		{
 			GUILayout.BeginVertical();
 
-			EditorGUILayout.LabelField("ID:", db.id);
+			EditorGUILayout.LabelField("Data Set Name:", db.id);
 			int dataLength = 0;
 			if (db.Data != null)
 				dataLength = db.Data.Length;
@@ -70,6 +74,5 @@ namespace Kudan.AR
 //				return db.image;
 			return Texture2D.blackTexture;
 		}*/
-
 	}
 }

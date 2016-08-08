@@ -4,30 +4,65 @@ using System.Collections;
 
 namespace Kudan.AR
 {
+	/// <summary>
+	/// The Marker Transform Driver, which is moved by the tracker when using the Marker Tracking Method.
+	/// </summary>
 	[AddComponentMenu("Kudan AR/Transform Drivers/Marker Based Driver")]
 	public class MarkerTransformDriver : TransformDriverBase
 	{
+		/// <summary>
+		/// Constant scale factor for resizing markers.
+		/// </summary>
 		private const float UnityScaleFactor = 10f;
 
 		[Tooltip("Optional ID")]
+		/// <summary>
+		/// The ID of the marker needed to activate this transform driver.
+		/// </summary>
 		public string _expectedId;
+
+		/// <summary>
+		/// Whether or not to resize child objects of this transform driver.
+		/// </summary>
 		public bool _applyMarkerScale;
 
 		[Header("Plane Drawing")]
+		/// <summary>
+		/// Whether or not to draw a box showing the space the marker takes up in the virtual world.
+		/// </summary>
 		public bool _alwaysDrawMarkerPlane = true;
+
+		/// <summary>
+		/// The width of the marker plane.
+		/// </summary>
 		public int _markerPlaneWidth;
+
+		/// <summary>
+		/// The height of the marker plane.
+		/// </summary>
 		public int _markerPlaneHeight;
 
+		/// <summary>
+		/// The ID of a detected trackable.
+		/// </summary>
 		private string _trackableId;
 
+		/// <summary>
+		/// Reference to the Marker Tracking Method.
+		/// </summary>
 		private TrackingMethodMarker _tracker;
 
+		/// <summary>
+		/// Finds the tracker.
+		/// </summary>
 		protected override void FindTracker()
 		{
 			_trackerBase = _tracker = (TrackingMethodMarker)Object.FindObjectOfType(typeof(TrackingMethodMarker));
-			Debug.Log ("el tracker base  es: " + _tracker);
 		}
 
+		/// <summary>
+		/// Register this instance with the Tracking Method class for event handling.
+		/// </summary>
 		protected override void Register()
 		{
 			if (_tracker != null)
@@ -40,6 +75,9 @@ namespace Kudan.AR
 			}
 		}
 
+		/// <summary>
+		/// Unregister this instance with the Tracking Method class for event handling.
+		/// </summary>
 		protected override void Unregister()
 		{
 			if (_tracker != null)
@@ -50,13 +88,16 @@ namespace Kudan.AR
 			}
 		}
 
+		/// <summary>
+		/// Raises the tracking found event.
+		/// </summary>
+		/// <param name="trackable">Trackable.</param>
 		public void OnTrackingFound(Trackable trackable)
 		{
 			bool matches = false;
-			if (string.IsNullOrEmpty(_expectedId) || (_expectedId == trackable.name))
+			if (_expectedId == trackable.name)
 			{
 				matches = true;
-				Debug.Log ("el trackable name es en found: " + trackable.name);
 			}
 
 			if (matches)
@@ -66,6 +107,10 @@ namespace Kudan.AR
 			}
 		}
 
+		/// <summary>
+		/// Raises the tracking lost event.
+		/// </summary>
+		/// <param name="trackable">Trackable.</param>
 		public void OnTrackingLost(Trackable trackable)
 		{
 			if (_trackableId == trackable.name)
@@ -75,13 +120,16 @@ namespace Kudan.AR
 			}
 		}
 
+		/// <summary>
+		/// Raises the tracking update event.
+		/// </summary>
+		/// <param name="trackable">Trackable.</param>
 		public void OnTrackingUpdate(Trackable trackable)
 		{
 			if (_trackableId == trackable.name)
 			{
 				this.transform.localPosition = trackable.position;
 				this.transform.localRotation = trackable.orientation;
-				Debug.Log ("el trackable name en update es: " + trackable.name);
 
 				if (_applyMarkerScale)
 				{
@@ -91,7 +139,9 @@ namespace Kudan.AR
 		}
 
 #if UNITY_EDITOR
-
+		/// <summary>
+		/// Sets the scale of child objects using the marker size.
+		/// </summary>
 		public void SetScaleFromMarkerSize()
 		{
 			if (_markerPlaneWidth > 0 && _markerPlaneHeight > 0)
@@ -100,11 +150,17 @@ namespace Kudan.AR
 			}
 		}
 
+		/// <summary>
+		/// Raises the draw gizmos selected event.
+		/// </summary>
 		void OnDrawGizmosSelected()
 		{
 			DrawPlane();
 		}
 
+		/// <summary>
+		/// Raises the draw gizmos event.
+		/// </summary>
 		void OnDrawGizmos()
 		{
 			if (_alwaysDrawMarkerPlane)
@@ -113,6 +169,9 @@ namespace Kudan.AR
 			}
 		}
 
+		/// <summary>
+		/// Draws the marker preview plane.
+		/// </summary>
 		private void DrawPlane()
 		{
 			Gizmos.matrix = this.transform.localToWorldMatrix;
@@ -136,7 +195,6 @@ namespace Kudan.AR
 			Gizmos.color = Color.magenta;
 			Gizmos.DrawWireCube(Vector3.zero, size);
 		}
-
 #endif
 	}
 };

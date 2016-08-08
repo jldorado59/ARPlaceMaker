@@ -5,6 +5,9 @@ using System.Collections;
 namespace Kudan.AR
 {
 	[CustomEditor(typeof(TrackingMethodMarker))]
+	/// <summary>
+	/// Class that creates a custom inspector entry for TrackingMethodMarker.
+	/// </summary>
 	public class TrackingMethodMarkerEditor : Editor
 	{
 		//private TrackingMethodMarker _target;
@@ -26,7 +29,7 @@ namespace Kudan.AR
 			
 			bool externalOperation = false;
 
-			if (GUILayout.Button("Generate Marker"))
+			if (GUILayout.Button("Add KARMarker Asset"))
 			{
 				externalOperation = true;
 				TrackableData.EditorCreateIssue();

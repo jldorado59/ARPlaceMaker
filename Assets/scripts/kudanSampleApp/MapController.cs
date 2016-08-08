@@ -39,11 +39,13 @@ public class MapController : MonoBehaviour {
 
     public void SetPosition(int index, string nombre, float latitude, float longitude)
     {
-        m_Map.UpdateMarker(index, nombre, GoogleMapColor.green, latitude, longitude);
+        if(m_Map != null)
+            m_Map.UpdateMarker(index, nombre, GoogleMapColor.green, latitude, longitude);
     }
 
     public void Refresh()
     {
-        m_Map.Refresh();
+        if(m_Map != null)
+            m_Map.Refresh();
     }
 }

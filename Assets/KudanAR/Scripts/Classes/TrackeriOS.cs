@@ -1,4 +1,3 @@
-#if UNITY_IOS
 using UnityEngine;
 using System.Text;
 using System.Collections;
@@ -10,6 +9,7 @@ namespace Kudan.AR
 	public class TrackeriOS : TrackerBase
 	{
 		private Renderer _background;
+		private MeshFilter _cameraBackgroundMeshFilter;
 		
 		private Texture2D _textureYp;
 		private int _textureYpID;
@@ -22,6 +22,9 @@ namespace Kudan.AR
 		private int _numFramesRenderedLast = 0;
 		private int _numFramesRendered = 0;
 		private float _rateTimer = 0.0f;
+
+		private ScreenOrientation _prevScreenOrientation;
+		private Matrix4x4 _projectionRotation = Matrix4x4.identity;
 		
 		//-------------------------------------------------------------------------------------------------------------//
 		// Plugin Interface
@@ -66,6 +69,8 @@ namespace Kudan.AR
 		public TrackeriOS(Renderer background)
 		{
 			_background = background;
+			_cameraBackgroundMeshFilter = background.GetComponent<MeshFilter> ();
+
 			SetYpCbCrMaterialOnBackground();
 		}
 		
@@ -150,7 +155,7 @@ namespace Kudan.AR
 #else
 			GL.IssuePluginEvent(kKudanARRenderEventId);
 #endif
-
+			UpdateRotation();
 			UpdateBackground();
 			_cameraRate = GetCaptureDeviceRate();
 			
@@ -174,6 +179,49 @@ namespace Kudan.AR
 			NativeInterface.GetProjectionMatrix (_cameraNearPlane, _cameraFarPlane, projectionFloats);
 			_projectionMatrix = ConvertNativeFloatsToMatrix (projectionFloats, _cameraAspect);
 
+			// Transform the projection matrix depending on orientation.
+			_projectionMatrix = _projectionMatrix * _projectionRotation;
+		}
+
+		public void UpdateRotation()
+		{
+			ScreenOrientation currentOrientation = Screen.orientation;
+
+			if (currentOrientation == _prevScreenOrientation) {
+				return;
+			}
+
+			Debug.Log(currentOrientation);
+
+			_prevScreenOrientation = currentOrientation;
+			float projectionScale = 1.0f / _cameraAspect;
+
+			int[] indices;
+
+			if (currentOrientation == ScreenOrientation.LandscapeLeft) {
+				indices = new int[]{ 0, 1, 2, 3 };
+				_projectionRotation = Matrix4x4.identity;
+			} else if (currentOrientation == ScreenOrientation.Portrait) {
+				indices = new int[]{ 2, 3, 1, 0 };
+				_projectionRotation = Matrix4x4.TRS (Vector3.zero, Quaternion.AngleAxis(90, Vector3.back), new Vector3( projectionScale, projectionScale, 1 ));
+			} else if (currentOrientation == ScreenOrientation.LandscapeRight) {
+				indices = new int[]{ 1, 0, 3, 2 };
+				_projectionRotation = Matrix4x4.TRS (Vector3.zero, Quaternion.AngleAxis(180, Vector3.back), Vector3.one);
+			} else if (currentOrientation == ScreenOrientation.PortraitUpsideDown) {
+				indices = new int[]{ 3, 2, 0, 1 };
+				_projectionRotation = Matrix4x4.TRS (Vector3.zero, Quaternion.AngleAxis(270, Vector3.back), new Vector3( projectionScale, projectionScale, 1 ));
+			} else {
+				return;
+			}
+
+			Vector3[] pos = new Vector3[4];
+
+			pos [indices[0]] = new Vector3 (-0.5f, -0.5f, 0.0f);
+			pos [indices[1]] = new Vector3 (0.5f, 0.5f, 0.0f);
+			pos [indices[2]] = new Vector3 (0.5f, -0.5f, 0.0f);
+			pos [indices[3]] = new Vector3 (-0.5f, 0.5f, 0.0f);
+
+			_cameraBackgroundMeshFilter.mesh.vertices = pos;
 		}
 
 		public override void PostRender()
@@ -364,7 +412,7 @@ namespace Kudan.AR
 		{
 			float[] f = new float[7];
 			
-			NativeInterface.FloorPlaceGetPose(f, 200);
+			NativeInterface.FloorPlaceGetPose(f, _floorHeight);
 			
 			position = new Vector3(f[0], f[1], f[2]);
 			orientation = new Quaternion(f[3], f[4], f[5], f[6]);
@@ -379,7 +427,4 @@ namespace Kudan.AR
 			orientation = new Quaternion(result[3], result[4], result[5], result[6]);
 		}
 	}
-
-
 }
-#endif

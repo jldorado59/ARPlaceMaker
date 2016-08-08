@@ -23,6 +23,8 @@
 			float4 Yp_ST;
 			float4 Yp_TexelSize;
 
+			float2 ScreenParams;
+
 			struct appdata
 			{
 				float4 vertex : POSITION;
@@ -50,9 +52,9 @@
 			{
 				float As = src.x / src.y;
 				float Ad = dst.x / dst.y;
-				if (As > Ad)
+				if (Ad < 1.0)
 					// Fit height
-					return float2(As / Ad, 1.0);
+					return float2(1.0 / (Ad * As), 1.0);
 				else
 					// Fit width
 					return float2(1.0, Ad / As);
@@ -62,7 +64,7 @@
 				v2f o;
 
 				float2 scl = scl_aspect_fill(Yp_TexelSize.zw, _ScreenParams.xy);
-				float2 pos = ((v.uv - 0.5) * scl * 2.0);
+				float2 pos = (v.vertex * scl * 2.0);
 				o.vertex = float4(pos, 0.0, 1.0);
 				o.uv = TRANSFORM_TEX(v.uv, Yp);
 				

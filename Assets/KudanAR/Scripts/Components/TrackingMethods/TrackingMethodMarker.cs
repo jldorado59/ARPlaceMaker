@@ -6,31 +6,65 @@ namespace Kudan.AR
 {
 	[DisallowMultipleComponent]
 	[AddComponentMenu("Kudan AR/Tracking Methods/Marker Tracking")]
+	/// <summary>
+	/// The Marker Tracking Method. This method tracks objects using markers for positional data.
+	/// </summary>
 	public class TrackingMethodMarker : TrackingMethodBase
 	{
+		/// <summary>
+		/// Array of markers.
+		/// </summary>
 		public TrackableData[] _markers;
 
+		/// <summary>
+		/// The found marker event.
+		/// </summary>
 		public MarkerFoundEvent _foundMarkerEvent;
+
+		/// <summary>
+		/// The lost marker event.
+		/// </summary>
 		public MarkerLostEvent _lostMarkerEvent;
+
+		/// <summary>
+		/// The update marker event.
+		/// </summary>
 		public MarkerUpdateEvent _updateMarkerEvent;
 
+		/// <summary>
+		/// Array of last detected trackables.
+		/// </summary>
 		private Trackable[] _lastDetectedTrackables;
 	
+		/// <summary>
+		/// The name of this tracking method.
+		/// </summary>
+		/// <value>The name.</value>
 		public override string Name
 		{
 			get { return "Marker"; }
 		}
 
+		/// <summary>
+		/// The ID of this tracking method.
+		/// </summary>
+		/// <value>The tracking method identifier.</value>
 		public override int TrackingMethodId
 		{
 			get { return 0; }
 		}
 
+		/// <summary>
+		/// Initialise this instance.
+		/// </summary>
 		public override void Init()
 		{
 			LoadMarkers();
 		}
 
+		/// <summary>
+		/// Loads the marker data.
+		/// </summary>
 		private void LoadMarkers()
 		{
 			foreach (TrackableData marker in _markers)
@@ -53,11 +87,17 @@ namespace Kudan.AR
 			}
 		}
 
+		/// <summary>
+		/// Processes the current frame.
+		/// </summary>
 		public override void ProcessFrame()
 		{
 			ProcessNewTrackables();
 		}
 
+		/// <summary>
+		/// Stops tracking.
+		/// </summary>
         public override void StopTracking()
         {
             base.StopTracking();
@@ -75,6 +115,9 @@ namespace Kudan.AR
             _lastDetectedTrackables = null;
         }
 
+		/// <summary>
+		/// Processes the new trackables.
+		/// </summary>
         private void ProcessNewTrackables()
 		{
 			Trackable[] newTrackables = Plugin.GetDetectedTrackablesAsArray();
@@ -137,13 +180,21 @@ namespace Kudan.AR
 			_lastDetectedTrackables = newTrackables;
 		}
 
+		/// <summary>
+		/// Draws the debug GUI.
+		/// </summary>
+		/// <param name="uiScale">User interface scale.</param>
 		public override void DebugGUI(int uiScale)
 		{
 			// Each actively tracked object
-			GUILayout.Label("Loaded: " + Plugin.GetNumTrackables());
+			GUILayout.Label ("Trackable sets loaded: " + Plugin.GetNumTrackables());
+
 			int numDetected = 0;
 			if (_lastDetectedTrackables != null)
+			{
 				numDetected = _lastDetectedTrackables.Length;
+
+			}
 			GUILayout.Label("Detected: " + numDetected);
 
 			if (_kudanTracker.HasActiveTrackingData())
@@ -165,7 +216,6 @@ namespace Kudan.AR
 
 				GUILayout.EndVertical();
 			}
-
 		}
 	}
 }

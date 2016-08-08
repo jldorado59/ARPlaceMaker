@@ -51,10 +51,11 @@ public class VerEscenasController : MonoBehaviour
         Title.text = "Escena guardada";
         Nombre.text = escena.Nombre + " " + escena.Fecha.ToShortDateString();
         Posicion.text = escena.Latitude.ToString() + "," + escena.Longitude.ToString();
-
         #if(UNITY_EDITOR_WIN)
-        WWW www = new WWW("file://c:" + Application.persistentDataPath + "/" + escena.Nombre + ".png"); //rendering texture
-        #else
+        WWW www = new WWW("file://e://Projects/Universidad/ARPlaceMaker/" + escena.Nombre + ".png"); //rendering texture
+        #elif(UNITY_ANDROID)
+        WWW www = new WWW("file://" + Application.persistentDataPath + "/" + escena.Nombre + ".png"); //rendering texture
+        #elif UNITY_IPHONE 
         WWW www = new WWW("file://" + Application.persistentDataPath + "/" + escena.Nombre + ".png"); //rendering texture
         #endif
 
